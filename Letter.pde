@@ -1,4 +1,5 @@
 class Letter {
+  RShape shape;
   ArrayList<RPoint> points;
   ArrayList<RPoint> topPoints;
   ArrayList<RPoint> bottomPoints;
@@ -6,7 +7,8 @@ class Letter {
   ArrayList colors;
   ArrayList<RPoint []> combinations;
 
-  Letter() {
+  Letter(RShape _shape) {
+    shape = _shape;
     points = new ArrayList<RPoint>();
     topPoints = new ArrayList<RPoint>();
     bottomPoints = new ArrayList<RPoint>();
@@ -26,9 +28,9 @@ class Letter {
     if (!FOUND) {
       points.add(point);
       if (onBottom) {
-        topPoints.add(point);
-      } else {
         bottomPoints.add(point);
+      } else {
+        topPoints.add(point);
       }
     }
   }
@@ -45,6 +47,28 @@ class Letter {
       i ++;
     }
     combinations.add(ps);
+  }
+
+  void drawStroke() {
+    noFill();
+    stroke(248, 242, 254);
+    shape.draw();
+  }
+
+  RPoint[] getRandomPoints(String where, int num) {
+    ArrayList<RPoint> ps = new ArrayList<RPoint>(points);
+    if ( where.equals("top") ) {
+      ps = new ArrayList<RPoint>(topPoints);
+    } else if( where.equals("bottom") ){
+      ps = new ArrayList<RPoint>(bottomPoints);
+    }
+    
+    RPoint[] results = new RPoint[num];
+    Collections.shuffle(ps);
+    for (int i=0; i<num; i++) {
+      results[i] = ps.get(i);
+    }
+    return results;
   }
 
   RPoint[] shuffle() {
