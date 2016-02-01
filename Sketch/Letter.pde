@@ -49,12 +49,6 @@ class Letter {
     combinations.add(ps);
   }
 
-  void drawStroke() {
-    noFill();
-    stroke(248, 242, 254);
-    shape.draw();
-  }
-
   RPoint[] getRandomPoints(String where, int num) {
     ArrayList<RPoint> ps = new ArrayList<RPoint>(points);
     if ( where.equals("top") ) {
@@ -74,6 +68,12 @@ class Letter {
   RPoint[] shuffle() {
     int index = int(random(combinations.size()));
     return combinations.get(index);
+  }
+
+  void drawStroke() {
+    noFill();
+    stroke(248, 242, 254);
+    shape.draw();
   }
 
   void drawTriangle() {
