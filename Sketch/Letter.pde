@@ -15,6 +15,7 @@ class Letter {
       if(topPoints.size() > 0 ){
         if(topPoints.get(0).y > one.y){
           topPoints.clear();
+          topPoints.add(one);
         }
         else if( topPoints.get(0).y == one.y ){
           Boolean FOUND = false;
@@ -36,6 +37,7 @@ class Letter {
       if(bottomPoints.size() > 0 ){
         if(bottomPoints.get(0).y < one.y){
           bottomPoints.clear();
+          bottomPoints.add(one);
         }
         else if( bottomPoints.get(0).y == one.y ){
           Boolean FOUND = false;

@@ -4,12 +4,14 @@ import processing.pdf.*;
 
 RShape grp;
 Letter[] letters;
-Float minY, maxY;
+Triangle[] triangles;
+ArrayList<RPoint> allTopPoints;
 color color1, color2, color3, color4, color5;
 
 void setup() {
   size(600, 400);
   frameRate(2);
+  noStroke();
   smooth();
 
   RG.init(this);
@@ -22,60 +24,63 @@ void setup() {
     letters[i] = letter;
   }
 
-  color1 = color(244, 122, 107);
-  color2 = color(250, 224, 60);
-  color3 = color(152, 221, 222);
-  color4 = color(74, 144, 226, 127);
-  color5 = color(74, 144, 226, 127);
+  allTopPoints = new ArrayList<RPoint>();
+  for (Letter letter : letters) {
+    println(letter.topPoints.size());
+    allTopPoints.addAll(letter.topPoints);
+  }
+  println(allTopPoints.size());
+
+  triangles = new Triangle[5];
+  triangles[0] = new Triangle(color(244, 122, 107));
+  triangles[1] = new Triangle(color(250, 224, 60));
+  triangles[2] = new Triangle(color(152, 221, 222));
+  triangles[3] = new Triangle(color(74, 144, 226, 127));
+  triangles[4] = new Triangle(color(74, 144, 226, 127));
 }
 
 
 void draw() {
   // Clean frame
   background(255);
+  updateTriangles();
 
   // Set the origin to draw in the middle of the sketch
   translate(width/2, height/2 + 60);
-  drawCrazy();
-}
 
-void drawCrazy() {
-  RPoint[] bottoms;
-  RPoint top;
-  noStroke();
-  blendMode(MULTIPLY);
-  ArrayList<RPoint> allTopPoints = new ArrayList<RPoint>();
   for (Letter letter : letters) {
-    allTopPoints.addAll(letter.topPoints);
+    letter.drawStroke();
   }
 
+  drawTriangles();
+}
+
+void updateTriangles() {
+  RPoint[] bottoms;
+  RPoint top;
+
+  Collections.shuffle(allTopPoints);
+  top = allTopPoints.get(0);
   bottoms = letters[0].getRandomPoints("bottom", 2);
-  Collections.shuffle(allTopPoints);
-  top = allTopPoints.get(0);
-  fill(color1);
-  triangle(bottoms[0].x, bottoms[0].y, bottoms[1].x, bottoms[1].y, top.x, top.y);
+  triangles[0].update(bottoms[0], bottoms[1], top);
 
+  top = allTopPoints.get(1);
   bottoms = letters[1].getRandomPoints("bottom", 2);
-  Collections.shuffle(allTopPoints);
-  top = allTopPoints.get(0);
-  fill(color2);
-  triangle(bottoms[0].x, bottoms[0].y, bottoms[1].x, bottoms[1].y, top.x, top.y);
-
+  triangles[1].update(bottoms[0], bottoms[1], top);
+  top = allTopPoints.get(2);
   bottoms = letters[1].getRandomPoints("bottom", 2);
-  Collections.shuffle(allTopPoints);
-  top = allTopPoints.get(0);
-  fill(color3);
-  triangle(bottoms[0].x, bottoms[0].y, bottoms[1].x, bottoms[1].y, top.x, top.y);
+  triangles[2].update(bottoms[0], bottoms[1], top);
 
+  top = allTopPoints.get(3);
   bottoms = letters[2].getRandomPoints("bottom", 2);
-  Collections.shuffle(allTopPoints);
-  top = allTopPoints.get(0);
-  fill(color4);
-  triangle(bottoms[0].x, bottoms[0].y, bottoms[1].x, bottoms[1].y, top.x, top.y);
+  triangles[3].update(bottoms[0], bottoms[1], top);
+  top = allTopPoints.get(4);
+  bottoms = letters[2].getRandomPoints("bottom", 2);
+  triangles[4].update(bottoms[0], bottoms[1], top);
+}
 
-  bottoms = letters[2].getRandomPoints("bottom", 2);
-  Collections.shuffle(allTopPoints);
-  top = allTopPoints.get(0);
-  fill(color5);
-  triangle(bottoms[0].x, bottoms[0].y, bottoms[1].x, bottoms[1].y, top.x, top.y);
+void drawTriangles() {
+  for (Triangle tri : triangles) {
+    tri.draw();
+  }
 }
