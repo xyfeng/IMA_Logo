@@ -93,7 +93,7 @@ class Letter {
 
   void drawStroke() {
     noFill();
-    stroke(248, 242, 254);
+    stroke(238, 232, 242);
     shape.draw();
   }
 
