@@ -1,15 +1,28 @@
 class Triangle {
   RPoint[] points;
+  RPoint[] _targetPoints;
   color c;
   Triangle(color _c) {
     points = new RPoint[3];
+    points[0] = new RPoint();
+    points[1] = new RPoint();
+    points[2] = new RPoint();
     c = _c;
+    
+    _targetPoints = new RPoint[3];
+  }
+  
+  void newPoints(RPoint _p1, RPoint _p2, RPoint _p3) {
+    _targetPoints[0] = new RPoint(_p1);
+    _targetPoints[1] = new RPoint(_p2);
+    _targetPoints[2] = new RPoint(_p3);
   }
 
-  void update(RPoint _p1, RPoint _p2, RPoint _p3) {
-    points[0] = new RPoint(_p1);
-    points[1] = new RPoint(_p2);
-    points[2] = new RPoint(_p3);
+  void update() {
+    for(int i=0; i<3; i++){
+      points[i].x += (_targetPoints[i].x - points[i].x ) * 0.5;
+      points[i].y += (_targetPoints[i].y - points[i].y ) * 0.5;
+    }
   }
 
   void draw() {
